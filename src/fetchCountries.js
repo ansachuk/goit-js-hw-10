@@ -1,6 +1,6 @@
 const BASIC_URL='https://restcountries.com/'
 
-export default function fetchCountries(name) {
+export function fetchCountries(name) {
    return fetch(`${BASIC_URL}/${name}`).then(res => {
       if (!res.ok) {
         throw new Error(res.status);
