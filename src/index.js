@@ -1,6 +1,8 @@
 import './css/styles.css';
-import fetchCountries from './fetchCountries';
+
 import debounce from 'lodash.debounce';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import fetchCountries from './fetchCountries';
 
 const DEBOUNCE_DELAY = 300;
 
@@ -10,12 +12,16 @@ const refs = {
    countryInfo:document.querySelector('.country-info')
 }
 
-console.log(fetchCountries);
-
 refs.nameCountryInput.addEventListener('input', debounce(countryNameInputHandler,DEBOUNCE_DELAY))
 
-function countryNameInputHandler(e) {
-   const inputValue = refs.nameCountryInput.value;
-   console.log(inputValue);
+function countryNameInputHandler() {
+   const inputValue = refs.nameCountryInput.value.trim();
+
+  if (inputValue) {
+     fetchCountries(inputValue).then(countryResponceHandler).catch(Notify.failure('Oops, there is no country with that name'))
+  }
+}
+
+function countryResponceHandler(countries) {
    
 }
