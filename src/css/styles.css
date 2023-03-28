@@ -28,7 +28,7 @@ p {
 
 .country-list-item {
   display: flex;
-  gap: 20px;
+  gap: 35px;
   align-items: center;
 }
 
