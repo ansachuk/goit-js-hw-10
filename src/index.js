@@ -6,30 +6,6 @@ import { fetchCountries } from './fetchCountries';
 
 const DEBOUNCE_DELAY = 300;
 
-const countryGlobalTest = [
-  {
-    name: 'Ukraine',
-    src: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Ukraine.svg/800px-Flag_of_Ukraine.svg.png',
-    capital: 'Kyiv',
-    population: '46000000',
-    languages: 'Ukrainian',
-  },
-  {
-    name: 'Great Britian',
-    src: 'https://cdn.britannica.com/25/4825-050-977D8C5E/Flag-United-Kingdom.jpg',
-    capital: 'London',
-    population: '55000000',
-    languages: 'English',
-  },
-  {
-    name: 'Poland',
-    src: 'https://upload.wikimedia.org/wikipedia/en/thumb/1/12/Flag_of_Poland.svg/800px-Flag_of_Poland.svg.png',
-    capital: 'Wrazlav',
-    population: '36000000',
-    languages: 'Polish',
-  },
-];
-
 const refs = {
   nameCountryInput: document.querySelector('#search-box'),
   countrysList: document.querySelector('.country-list'),
@@ -44,33 +20,37 @@ refs.nameCountryInput.addEventListener(
 function countryNameInputHandler() {
   const searchQuery = refs.nameCountryInput.value.trim();
 
-  if (searchQuery) {
-    fetchCountries(searchQuery)
-      .then(countryResponceHandler)
-      .catch(Notify.failure('Oops, there is no country with that name'));
+  if (!searchQuery) {
+    clearAllInfo();
+    return;
   }
+
+  fetchCountries(searchQuery).then(countryResponceHandler);
+  // .catch(Notify.failure('Oops, there is no country with that name'));
 }
 
 function countryResponceHandler(countries) {
+  console.log(countries);
   if (countries.length > 10) {
     Notify.info('Too many matches found. Please enter a more specific name.');
     return;
-  } else if (countries.length === 1) {
+  } else if (countries.length < 2) {
+  } else {
     refs.countrysList.innerHTML = countries
-      .map(country => {
-        createCountryListMarkup(country);
-      })
+      .map(createCountryListMarkup)
       .join('');
   }
 }
 
-function createCountryListMarkup({ src, name }) {
-  return `<li>
-        <svg class="country-flag" width="40" height="40">
-          <use href="${src}"></use>
-        </svg>
-      <p class="country-name">${name}</p>
+function createCountryListMarkup({ flags, name }) {
+  // console.log(name.official);
+  return `<li class="country-list-item">
+      <img src="${flags.svg}" alt="country flag" width="40" height="40" />
+      <p class="country-name">${name.official}</p>
       </li>`;
 }
 
-countryResponceHandler(countryGlobalTest);
+function clearAllInfo() {
+  refs.countryInfo.innerHTML = '';
+  refs.countrysList.innerHTML = '';
+}
