@@ -31,3 +31,9 @@ p {
   gap: 20px;
   align-items: center;
 }
+
+.country-name {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}

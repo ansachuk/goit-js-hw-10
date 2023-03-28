@@ -34,8 +34,11 @@ function countryResponceHandler(countries) {
   if (countries.length > 10) {
     Notify.info('Too many matches found. Please enter a more specific name.');
     return;
-  } else if (countries.length < 2) {
+  } else if (countries.length === 1) {
+    clearAllInfo();
+    refs.countryInfo.innerHTML = createOneCountryMarkup(countries);
   } else {
+    clearAllInfo();
     refs.countrysList.innerHTML = countries
       .map(createCountryListMarkup)
       .join('');
@@ -49,6 +52,14 @@ function createCountryListMarkup({ flags, name }) {
       <p class="country-name">${name.official}</p>
       </li>`;
 }
+
+function createOneCountryMarkup({
+  flags,
+  name,
+  capital,
+  population,
+  languages,
+}) {}
 
 function clearAllInfo() {
   refs.countryInfo.innerHTML = '';
