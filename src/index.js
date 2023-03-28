@@ -25,20 +25,19 @@ function countryNameInputHandler() {
     return;
   }
 
-  fetchCountries(searchQuery).then(countryResponceHandler);
-  // .catch(Notify.failure('Oops, there is no country with that name'));
+  fetchCountries(searchQuery)
+    .then(countryResponceHandler)
+    .catch(err => {
+      Notify.failure('Oops, there is no country with that name');
+    });
 }
 
 function countryResponceHandler(countries) {
   if (countries.length > 10) {
     Notify.info('Too many matches found. Please enter a more specific name.');
-    return;
   } else if (countries.length === 1) {
-    console.log(countries);
-
     clearAllInfo();
     refs.countryInfo.innerHTML = createOneCountryMarkup(countries[0]);
-    return;
   } else {
     clearAllInfo();
     refs.countrysList.innerHTML = countries
@@ -48,7 +47,6 @@ function countryResponceHandler(countries) {
 }
 
 function createCountryListMarkup({ flags, name }) {
-  // console.log(name.official);
   return `<li class="country-list-item">
       <img src="${flags.svg}" alt="country flag" width="40" height="40" />
       <p class="country-name">${name.official}</p>
