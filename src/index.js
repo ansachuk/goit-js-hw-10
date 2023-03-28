@@ -28,6 +28,7 @@ function countryNameInputHandler() {
   fetchCountries(searchQuery)
     .then(countryResponceHandler)
     .catch(err => {
+      clearAllInfo();
       Notify.failure('Oops, there is no country with that name');
     });
 }
