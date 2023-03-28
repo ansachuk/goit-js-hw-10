@@ -30,13 +30,15 @@ function countryNameInputHandler() {
 }
 
 function countryResponceHandler(countries) {
-  console.log(countries);
   if (countries.length > 10) {
     Notify.info('Too many matches found. Please enter a more specific name.');
     return;
   } else if (countries.length === 1) {
+    console.log(countries);
+
     clearAllInfo();
-    refs.countryInfo.innerHTML = createOneCountryMarkup(countries);
+    refs.countryInfo.innerHTML = createOneCountryMarkup(countries[0]);
+    return;
   } else {
     clearAllInfo();
     refs.countrysList.innerHTML = countries
@@ -59,7 +61,24 @@ function createOneCountryMarkup({
   capital,
   population,
   languages,
-}) {}
+}) {
+  return `<h2 class="country-name">
+        <img
+          src="${flags.svg}"
+          width="60"
+          height="60"
+          alt="country flag"
+        />
+        ${name.official}
+      </h2>
+      <ul class="country__list--info">
+        <li class="country__info--item"><b>Capital: </b>${capital}</li>
+        <li class="country__info--item"><b>Population: </b>${population}</li>
+        <li class="country__info--item">
+          <b>Languages: </b>${Object.values(languages).join(', ')}
+        </li>
+      </ul>`;
+}
 
 function clearAllInfo() {
   refs.countryInfo.innerHTML = '';
